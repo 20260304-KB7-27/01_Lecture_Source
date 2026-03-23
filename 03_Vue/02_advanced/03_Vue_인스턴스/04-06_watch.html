@@ -34,21 +34,21 @@
             console.log(`이름이 "${oldVal}"에서 "${newVal}"로 변경됨`);
           });
 
-          //   // 객체를 deep을 사용해서 감시할경우 newVal, oldVal가 동일한 Proxy객체를 참조함.
-          //   watch(
-          //     user,
-          //     (newVal, oldVal) => {
-          //       console.log(
-          //         `기존 사용자 : ${oldVal.age} , ${oldVal.email} -> 변경된 사용자 : ${newVal.age}, ${newVal.email}`,
-          //       );
-          //     },
-          //     {
-          //       deep: true, // 객체 내부속성까지 감시
-          //     },
-          //   );
+            // 객체를 deep을 사용해서 감시할경우 newVal, oldVal가 동일한 Proxy객체를 참조함.
+            // watch(
+            //   user,
+            //   (newVal, oldVal) => {
+            //     console.log(
+            //       `기존 사용자 : ${oldVal.age} , ${oldVal.email} -> 변경된 사용자 : ${newVal.age}, ${newVal.email}`,
+            //     );
+            //   },
+            //   {
+            //     deep: true, // 객체 내부속성까지 감시
+            //   },
+            // );
 
           watch(
-            // 1. user.value를 복사해서 반환 (참조가 아닌 스냅샷 전달)
+            // 1. user.value를 복사해서 반환 (참조가 아닌 복사본 전달)
             () => ({ ...user.value }),
             (newVal, oldVal) => {
               console.log(
