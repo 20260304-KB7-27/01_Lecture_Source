@@ -1,4 +1,13 @@
 <template>
+  <!-- todo 추가 버튼 -->
+  <div class="row">
+    <div class="col p-3">
+      <RouterLink class="btn btn-primary" to="/todos/add">
+        할일 추가
+      </RouterLink>
+    </div>
+  </div>
+  <!-- 목록보여주기 -->
   <div class="row">
     <div class="col p-3">
       <ul class="list-group">
