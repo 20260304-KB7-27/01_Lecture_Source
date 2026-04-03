@@ -7,6 +7,7 @@
 
 <script setup>
 import { useStudent } from '@/api/Students';
+import StudentCard from '@/components/StudentCard.vue';
 import { onMounted } from 'vue';
 
 const { students, fetchAllStudents } = useStudent();
@@ -14,7 +15,6 @@ const { students, fetchAllStudents } = useStudent();
 onMounted(() => {
   fetchAllStudents();
 });
-
 </script>
 
 <style scoped></style>

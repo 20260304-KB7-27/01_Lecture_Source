@@ -11,6 +11,10 @@ const router = createRouter({
       path: '/todos/edit/:id',
       component: () => import('@/views/EditTodo.vue'),
     },
+    {
+      path: '/students',
+      component: () => import('@/views/Students.vue'),
+    },
 
     // (.*)*/  : 하위에 모든 문자열을 포함하게되는 정규식
     { path: '/:paths(.*)*', component: () => import('@/views/NotFound.vue') },

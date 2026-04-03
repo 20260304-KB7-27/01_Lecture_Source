@@ -1,7 +1,7 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 import { ref } from 'vue';
-
+import axios from '@/utils/axios';
 /* 
 컴포저블 함수
 훈련생 데이터를 관리하는 함수
@@ -11,7 +11,12 @@ export const useStudent = () => {
 
   // 전체 조회
   const fetchAllStudents = async () => {
-    const response = await axios.get('/api/students');
+    // const response = await axios.get('/api/students');
+
+    // baseUrl 설정으로 /api 안써도됨!
+    const response = await axios.get('/students');
+
+    students.value = response.data;
   };
 
   // 추가
