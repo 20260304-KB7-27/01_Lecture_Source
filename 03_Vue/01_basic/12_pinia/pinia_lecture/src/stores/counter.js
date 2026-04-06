@@ -12,15 +12,23 @@ Pinia
 */
 export const useCounterStore = defineStore('counter', () => {
   // state
-  const count = ref(0);
+  const count = ref(Number(localStorage.getItem('local-count') || 0));
 
   // actions
   function increment() {
     count.value++;
+
+    // LocalStorage
+    // - 브라우저를 닫아도 데이터가 유지됨 (명시적으로 삭제 전까지 보관)
+    // - 로그인 상태, 사용자설정
+    localStorage.setItem('local-count', count.value);
   }
 
   function reset() {
     count.value = 0; // 초기화
+
+    // - 브라우저를 닫아도 데이터가 유지됨 (명시적으로 삭제 전까지 보관)
+    localStorage.setItem('local-count', 0);
   }
 
   return { count, increment, reset };
