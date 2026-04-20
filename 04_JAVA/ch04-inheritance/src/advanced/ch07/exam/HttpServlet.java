@@ -11,6 +11,7 @@ package advanced.ch07.exam;
         1) 여러 클래스들의 공통 규약 설정
         2) 표준화된 틀 제공
         3) 메소드의 통일성 확보
+    5. 단점 : 다중 상속 불가능 => 확장된 개념의 인터페이스 도입
  */
 public abstract class HttpServlet {
 
