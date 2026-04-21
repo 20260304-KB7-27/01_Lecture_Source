@@ -1,22 +1,14 @@
-package basic.ch09.sec02.exam02;
+package basic.ch09.sec03.exam02;
 
-// 인스턴스 내부 클래스 사용 결과 예측 문제
+// 정적 내부 클래스 사용법 문제
 public class AExample {
     public static void main(String[] args) {
-        // A 객체 생성 (외부 객체)
-        A a = new A();
-
-        // A 인스턴스 메소드 호출
-        a.useB();
-
-        /*
-            문제: 어떤 결과가 나올지 적어보기
-            B-생성자 실행
-            1
-            B-method1 실행
-            2
-            B-method2 실행
-         */
-
+        // 문제: B 객체 생성 및 인스턴스 필드 및 메소드 사용
+        A.B b = new A.B();
+        System.out.println(b.field1); // 인스턴스 필드
+        b.method1(); // 인스턴스 메소드
+        // 문제: B 클래스의 정적 필드 및 메소드 사용
+        System.out.println(A.B.field2);
+        A.B.method2();
     }
 }
