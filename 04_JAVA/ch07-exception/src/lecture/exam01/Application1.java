@@ -26,8 +26,11 @@ public class Application1 {
 
         // 상황1. 사용자 입력값으로 나눗셈 연산 프로그램
 
-        int inputNum = 5;
-        System.out.println("10 / 사용자입력값: " + 10 / inputNum);
+        int inputNum = 0;
+        System.out.println("10 / 사용자입력값: " + 10 / inputNum); // ArithmeticException
+
+        // ~~~~~
+
         System.out.println("프로그램 종료");
     }
 }

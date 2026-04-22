@@ -20,9 +20,16 @@ public class Application2 {
 
     public static void main(String[] args) {
 
-        String inputStr = "23";
-        int num = Integer.parseInt(inputStr);
-        System.out.println("num: " + num);
+        String inputStr = "10000원";
+
+        // if(inputStr이 숫자로 치환될수있는 문자열일 경우) => 조건문 핸들링 애매
+        try {
+            int num = Integer.parseInt(inputStr);
+            System.out.println("num: " + num);
+        } catch(NumberFormatException e){
+            System.out.println("숫자로 치환 불가");
+        }
+
 
         System.out.println("프로그램 종료");
 

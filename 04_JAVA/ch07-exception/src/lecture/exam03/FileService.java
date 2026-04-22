@@ -8,14 +8,37 @@ package lecture.exam03;
     3. RuntimeException 계층 제외한 Exception 계열
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class FileService {
 
-    public void createFile() {
+    public void createFile() throws IOException {
+
+        /*
+        try {
+            new File("F:\\test.txt").createNewFile();
+        }catch(IOException e){
+            System.out.println("파일 생성 실패");
+        }
+        */
+
+        new File("F:\\test.txt").createNewFile();
 
     }
 
-    public void readFile() {
+    public void readFile() throws FileNotFoundException {
+        /*
+        try {
+            new FileInputStream("F:\\test.txt");
+        }catch(FileNotFoundException e) {
+            System.out.println("파일 읽기 실패");
+        }
+        */
 
+        new FileInputStream("F:\\test.txt");
     }
 
 

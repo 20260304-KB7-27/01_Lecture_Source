@@ -5,8 +5,8 @@ public class Application3 {
 
         // 상황3. 사용자의 입력문자열을 숫자로 치환 프로그램
 
-        String inputStr = "23";
-        int num = Integer.parseInt(inputStr);
+        String inputStr = "10000원";
+        int num = Integer.parseInt(inputStr); // NumberFormatException
         System.out.println("num: " + num);
 
         System.out.println("프로그램 종료");

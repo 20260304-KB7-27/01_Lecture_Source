@@ -10,9 +10,50 @@ public class Application3 {
         String inputSize = "10";
         int inputIndex = 5;
 
-        int size = Integer.parseInt(inputSize);
-        int[] arr = new int[size];
-        System.out.println(arr[inputIndex]);
+        try {
+            int size = Integer.parseInt(inputSize); // NumberFormatEx
+            int[] arr = new int[size]; // NegativeArraySizeEx
+            System.out.println(arr[inputIndex]); // ArrayIndexOutOfBoundsEx
+        }catch(NumberFormatException e) {
+            System.out.println("치환 불가");
+        }catch(NegativeArraySizeException e){
+            System.out.println("배열 크기 음수 제시 불가");
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("부적절한 인덱스 제시");
+        }
+        // 다중 catch 블럭 작성 가능 => 각 상황별 예외처리 구문 써두기
+
+        try {
+            int size = Integer.parseInt(inputSize);
+            int[] arr = new int[size];
+            System.out.println(arr[inputIndex]);
+        }catch(NumberFormatException | NegativeArraySizeException e) {
+            System.out.println("치환 불가 또는 음수제시 불가");
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("부적절한 인덱스 제시");
+        }
+        // 여러 예외클래스 묶어서 동일한 로직으로 처리할 경우 => |(파이프기호)로 연결
+
+        try {
+            int size = Integer.parseInt(inputSize);
+            int[] arr = new int[size];
+            System.out.println(arr[inputIndex]);
+        }catch(RuntimeException e) { // 매개변수 다형성
+            System.out.println("치환 불가 또는 음수제시 불가 또는 부적절한 인덱스");
+        }
+        // 부모타입예외클래스로 한꺼번에 처리 가능
+
+        try {
+            int size = Integer.parseInt(inputSize);
+            int[] arr = new int[size];
+            System.out.println(arr[inputIndex]);
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("부적절한 인덱스");
+        }catch(RuntimeException e) { // 매개변수 다형성
+            System.out.println("치환 불가 또는 음수제시 불가");
+        }
+        // 하위 예외클래스타입 아래에 상위 예외클래스 타입있어야됨 (순서 중요)
+
 
         System.out.println("프로그램 종료");
 
