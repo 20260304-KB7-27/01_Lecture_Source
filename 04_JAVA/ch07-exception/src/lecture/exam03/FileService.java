@@ -8,12 +8,19 @@ package lecture.exam03;
     3. RuntimeException 계층 제외한 Exception 계열
  */
 
+import lombok.Getter;
+import lombok.ToString;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+@Getter
+@ToString
 public class FileService {
+
+    private String name;
 
     public void createFile() throws IOException {
 
