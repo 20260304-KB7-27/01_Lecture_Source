@@ -1,6 +1,5 @@
 package advanced.ch15.sec02.exam01;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ArrayListExample {
 
         System.out.println("--------------------------- 삭제이후 ------------");
         // 리스트 전체 출력
-        for(Board b : list) {
+        for (Board b : list) {
             System.out.println(b);
         }
 
