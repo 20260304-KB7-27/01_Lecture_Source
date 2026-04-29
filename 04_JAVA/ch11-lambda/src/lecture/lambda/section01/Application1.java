@@ -21,6 +21,7 @@ public class Application1 {
 
         // 3. 람다식
         Calculator c3 = (a, b) -> a + b;
+        System.out.println(c3.sum(1,5));
 
     }
 }

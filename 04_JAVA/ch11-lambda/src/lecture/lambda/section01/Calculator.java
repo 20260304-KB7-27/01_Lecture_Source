@@ -7,4 +7,5 @@ package lecture.lambda.section01;
 public interface Calculator {
 
     public int sum(int a, int b );
+//    public int sum2(int a, int b );
 }
