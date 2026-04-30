@@ -26,6 +26,14 @@ public class Application2 {
         Stream<Double> doubleStream = new Random().doubles(5).boxed();
 //        DoubleStream doubleStream2 = new Random().doubles(5);
 
+        Stream<String> stringStream1 = Stream.of("java", "mysql", "jdbc");
+        Stream<String> stringStream2 = Stream.of("html", "css", "js");
 
+        System.out.println();
+//        stringStream1.forEach(System.out::println);
+
+        // concat을 이용해서 두개의 스트림을 동일타입 스트림으로 합칠 수 있다.
+        Stream<String> concatStream = Stream.concat(stringStream1, stringStream2);
+        concatStream.forEach(System.out::println);
     }
 }
