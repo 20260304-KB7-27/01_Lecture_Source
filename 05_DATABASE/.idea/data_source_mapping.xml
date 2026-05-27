@@ -18,5 +18,7 @@
     <file url="file://$PROJECT_DIR$/03_SQL심화/03_builtin_function/03_Date.sql" value="0d6e0bbd-d181-4295-aecc-e6117883720b" />
     <file url="file://$PROJECT_DIR$/03_SQL심화/03_builtin_function/04_Control.sql" value="0d6e0bbd-d181-4295-aecc-e6117883720b" />
     <file url="file://$PROJECT_DIR$/03_SQL심화/03_builtin_function/05_Cast.sql" value="0d6e0bbd-d181-4295-aecc-e6117883720b" />
+    <file url="file://$PROJECT_DIR$/03_SQL심화/04_JOIN/01_INNER_JOIN.sql" value="0d6e0bbd-d181-4295-aecc-e6117883720b" />
+    <file url="file://$PROJECT_DIR$/03_SQL심화/04_JOIN/02_OUTER_JOIN.sql" value="0d6e0bbd-d181-4295-aecc-e6117883720b" />
   </component>
 </project>
