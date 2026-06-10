@@ -21,7 +21,7 @@ public class TravelDaoImpl implements TravelDao {
     @Override
     public void insert(TravelVO travel) {
         String sql = "insert into tbl_travel(no, district,title,description, address, phone) values(?,?,?,?,?,?)";
-
+        
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, travel.getNo());
             pstmt.setString(2, travel.getDistrict());
