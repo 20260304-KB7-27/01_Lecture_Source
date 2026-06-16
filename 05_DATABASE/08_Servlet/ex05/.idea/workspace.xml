@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52c38480-2e64-485a-b5d1-35b264007577" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ex05/ConditionServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ex05/ForEachServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ex05/ScopeServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ex05/domain/Member.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/helloView.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/jstl/condition.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/jstl/forEach.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/scope.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/scope2.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../demo/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../demo/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ex03/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ex03/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,6 +208,7 @@
       <updated>1781152137734</updated>
       <workItem from="1781152138952" duration="5920000" />
       <workItem from="1781158125917" duration="41000" />
+      <workItem from="1781237721992" duration="68000" />
     </task>
     <servers />
   </component>

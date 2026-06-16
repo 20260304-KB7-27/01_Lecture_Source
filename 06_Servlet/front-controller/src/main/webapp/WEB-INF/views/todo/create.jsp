@@ -4,6 +4,9 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>일치하는 페이지가 없습니다.</h1>
+<h1>새 Todo 생성</h1>
+<form method="POST">
+    <input type="submit">
+</form>
 </body>
 </html>

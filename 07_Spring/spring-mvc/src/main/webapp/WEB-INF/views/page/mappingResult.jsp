@@ -4,6 +4,8 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>일치하는 페이지가 없습니다.</h1>
+<h1> mappingResult.jsp </h1>
+<h1> ${message} </h1>
 </body>
+
 </html>
