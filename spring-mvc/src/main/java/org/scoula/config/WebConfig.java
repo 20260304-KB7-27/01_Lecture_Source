@@ -46,7 +46,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 
         // 멀티파트 파일 기능 설정
         MultipartConfigElement multipartConfigElement = new MultipartConfigElement(
-                LOCATION, MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD
+                LOCATION,MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD
         );
 
         registration.setMultipartConfig(multipartConfigElement);
