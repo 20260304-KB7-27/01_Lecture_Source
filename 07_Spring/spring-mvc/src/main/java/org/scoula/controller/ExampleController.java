@@ -26,6 +26,7 @@ public class ExampleController {
         * ModelAndView
         * - 데이터와 이동할 View 이름을 같이 반환
         * */
+
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", "신규 핸들러 메소드");
         mav.setViewName("page/mappingResult");

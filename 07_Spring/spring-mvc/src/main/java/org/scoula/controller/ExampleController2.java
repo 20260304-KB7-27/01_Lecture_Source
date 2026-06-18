@@ -24,6 +24,7 @@ public class ExampleController2 {
     * -> 요청 파라머터를 자바 객체에 바인딩하는 역할
     * - 객체의 Setter를 통해 값이 주입됨
     * - 생략 가능
+    * /localhost:8080/example01?id=abc&password=1234
     * */
     @GetMapping("/example01")
     public String get(/*@ModelAttribute*/ LoginRequestDTO dto, Model model) {
@@ -40,6 +41,7 @@ public class ExampleController2 {
     * RequestParam
     * - 요청 파리머터를 개별 변수에 바인딩할때 사용
     * - 리스트 /배열로도 받을 수 있음.
+    * /localhost:8080/example01?id=abc&password=1234
     * */
     @GetMapping("/example02")
     public String get2(
