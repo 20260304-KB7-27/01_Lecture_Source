@@ -13,9 +13,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
+@EnableTransactionManagement
 @Configuration
 @PropertySource({"classpath:/application.properties"})
 @MapperScan(basePackages = {
@@ -61,7 +63,6 @@ public class RootConfig {
     @Bean
     public DataSourceTransactionManager transactionManager() {
         DataSourceTransactionManager manager = new DataSourceTransactionManager(dataSource());
-
         return manager;
     }
 

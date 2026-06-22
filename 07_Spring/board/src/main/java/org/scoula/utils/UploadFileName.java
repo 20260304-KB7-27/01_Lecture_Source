@@ -1,4 +1,4 @@
-package org.scoula.config;
+package org.scoula.utils;
 
 // 고유한 파일명을 만드는 메소드 생성용
 public class UploadFileName {

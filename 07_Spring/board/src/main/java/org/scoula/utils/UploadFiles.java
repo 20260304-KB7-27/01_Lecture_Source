@@ -3,10 +3,11 @@ package org.scoula.utils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 public class UploadFiles {
 
-    public static String upload(String baseDir, MultipartFile part) {
+    public static String upload(String baseDir, MultipartFile part) throws IOException {
 
 
         // 기본 디렉토리 확인, 없으면 생성
@@ -19,7 +20,10 @@ public class UploadFiles {
         String filename = part.getOriginalFilename();
 
         // 저장할 파일 객체 생성
-        File dest = new File(baseDir, "파일이름");
+        File dest = new File(baseDir, UploadFileName.getUniqueName(filename));
 
+        part.transferTo(dest); // 업로드된 파일을 실제 서버 디렉토리에 저장 (물리파일생성)
+
+        return dest.getPath(); // 저장된 파일 경로
     }
 }

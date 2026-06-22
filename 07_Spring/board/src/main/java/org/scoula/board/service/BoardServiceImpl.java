@@ -2,9 +2,11 @@ package org.scoula.board.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.scoula.board.domain.BoardAttachmentVO;
 import org.scoula.board.domain.BoardVO;
 import org.scoula.board.dto.BoardDTO;
 import org.scoula.board.mapper.BoardMapper;
+import org.scoula.utils.UploadFiles;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
+    private final static String BASE_DIR = "c:/upload/board";
 
     private final BoardMapper boardMapper;
 
@@ -38,6 +41,7 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(NoSuchElementException::new);
     }
 
+    @Transactional // 2가지의 insert문중 하나라도 예외가발생하면 rollback
     @Override
     public void create(BoardDTO board) {
 
@@ -57,16 +61,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 파일 업로드
-    private void upload(Long no, List<MultipartFile> files) {
+    private void upload(Long bno, List<MultipartFile> files) {
         for(MultipartFile part: files) {
             if(part.isEmpty()) continue;
 
             // 파일을 직접 저장 -> IOException
             try {
                 // 1. 실제 파일을 서버에 저장
-
+                String uploadPath = UploadFiles.upload(BASE_DIR, part);
 
                 // 2. 데이터베이스에 저장
+                BoardAttachmentVO attach = BoardAttachmentVO.of(part, bno, uploadPath);
+                boardMapper.createAttachment(attach);
 
             } catch (IOException e) {
                 throw new RuntimeException();
