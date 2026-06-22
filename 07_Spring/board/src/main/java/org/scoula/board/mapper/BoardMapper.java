@@ -19,4 +19,6 @@ public interface BoardMapper {
     public int delete(long no);
 
     public void createAttachment(BoardAttachmentVO attach);
+
+    BoardAttachmentVO getAttachment(Long no);
 }

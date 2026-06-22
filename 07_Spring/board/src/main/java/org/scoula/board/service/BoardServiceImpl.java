@@ -100,4 +100,13 @@ public class BoardServiceImpl implements BoardService {
 
         return result == 1;
     }
+
+
+    @Override
+    public BoardAttachmentVO getAttachment(Long no) {
+
+        return boardMapper.getAttachment(no);
+    }
+
+
 }

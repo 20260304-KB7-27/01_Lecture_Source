@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.scoula.board.domain.BoardAttachmentVO;
 import org.scoula.board.domain.BoardVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,9 @@ public class BoardDTO {
     private Date regDate;
     private Date updateDate;
 
+    // db에 저장된 파일 내용
+    private List <BoardAttachmentVO> attaches;
+
     // 실제 업로드 파일(MultipartFile) 목록 (클라이언트에서 전달받을)
     List<MultipartFile> files = new ArrayList<>();
 
@@ -36,6 +40,7 @@ public class BoardDTO {
                     .writer(vo.getWriter())
                     .regDate(vo.getRegDate())
                     .updateDate(vo.getUpdateDate())
+                    .attaches(vo.getAttaches()) // 추가
                     .build();
         }
 
@@ -49,6 +54,7 @@ public class BoardDTO {
                     .writer(writer)
                     .regDate(regDate)
                     .updateDate(updateDate)
+                    .attaches(attaches) //추가
                     .build();
         }
     }
