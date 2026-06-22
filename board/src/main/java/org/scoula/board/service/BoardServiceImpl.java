@@ -7,9 +7,7 @@ import org.scoula.board.dto.BoardDTO;
 import org.scoula.board.mapper.BoardMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -43,39 +41,9 @@ public class BoardServiceImpl implements BoardService {
 
         BoardVO boardVo = board.toVo();
 
-        boardMapper.create(boardVo); // 게시글 생성
-
-        // 만약 첨부파일들이 있으면 저장
-        List<MultipartFile> files = board.getFiles();
-
-        if(files != null && !files.isEmpty()) {
-            // 첨부파일이 있을 경우
-            upload(boardVo.getNo(), files);
-        }
+        boardMapper.create(boardVo);
 
         board.setNo(boardVo.getNo());
-    }
-
-    // 파일 업로드
-    private void upload(Long no, List<MultipartFile> files) {
-        for(MultipartFile part: files) {
-            if(part.isEmpty()) continue;
-
-            // 파일을 직접 저장 -> IOException
-            try {
-                // 1. 실제 파일을 서버에 저장
-
-
-                // 2. 데이터베이스에 저장
-
-            } catch (IOException e) {
-                throw new RuntimeException();
-                // -> @Transaction에서 감지할 수 있도록
-                // 예외가 발생하면 RollBack (Transaction)
-            }
-
-        }
-
     }
 
 
