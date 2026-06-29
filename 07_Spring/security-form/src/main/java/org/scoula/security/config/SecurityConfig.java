@@ -14,7 +14,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import java.util.Arrays;
 
 /*
 * Spring Security의 보안 설정 클래스
@@ -46,6 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // CSRF 필터 앞에다 encodingFilter를 놓겠다.
         http.addFilterBefore(encodingFilter(), CsrfFilter.class);
 
+        // CORS 설정 추가
+        http.cors();
+
         // URL별 접근 권한 설정
         http.authorizeRequests()
                 .antMatchers("/security/all")
@@ -66,6 +74,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true) // 세션 초기화
                 .deleteCookies("JSESSION-ID") // 삭제할 쿠키
                 .logoutSuccessUrl("/security/logout"); // 로그아웃성공하면 이동할 페이지
+
+        http.sessionManagement()
+                .maximumSessions(1) // 동시 세션 수 제한
+                .maxSessionsPreventsLogin(false)
+                .expiredUrl("/security/login?expired");
     }
 
 
@@ -83,5 +96,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration(); // CORS 설정객체
+
+        // origin -> 출처
+//        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // 모든 출처에대해 허용
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://127.0.0.1:5500"));
+
+        // 허용할 HTTP 메소드 목록
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+
+        // 모든 요청헤더 허용
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        // 쿠키, Authorization 헤더 등 자격증명을 포함한 요청 허용
+        configuration.setAllowCredentials(true);
+
+        // 특정 URL 경로 패턴에 대해 CORS 설정 적용
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source; // Security 필터체인에서 사용
+    }
+
 }
 
