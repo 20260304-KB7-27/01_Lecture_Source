@@ -3,7 +3,11 @@ package org.scoula.security.config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.mybatis.spring.annotation.MapperScan;
+import org.scoula.security.filter.AuthenticationErrorFilter;
+import org.scoula.security.filter.JwtAuthenticationFilter;
 import org.scoula.security.filter.JwtUsernamePasswordAuthenticationFilter;
+import org.scoula.security.handler.CustomAccessDeniedHandler;
+import org.scoula.security.handler.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,8 +32,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import java.util.Arrays;
 
 /*
-* Spring Security의 보안 설정 클래스
-* */
+ * Spring Security의 보안 설정 클래스
+ * */
 @Configuration
 @EnableWebSecurity // 필터체인 활성화
 @RequiredArgsConstructor
@@ -39,7 +43,10 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-
+    private final JwtAuthenticationFilter jwtAuthenticationFilter; // JWT 인증필터
+    private final AuthenticationErrorFilter authenticationErrorFilter; // jwt 예외 필터
+    private final CustomAuthenticationEntryPoint authEntryPoint; // 미인증 요청 처리
+    private final CustomAccessDeniedHandler customAccessDeniedHandler; // 미인가 처리
     @Autowired
     private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
 
@@ -52,15 +59,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /*
-    * CSRF : 로그인한 사용자를 악의적인 사이트에서 몰래 요청을 보내게하는 공격
-    * */
+     * CSRF : 로그인한 사용자를 악의적인 사이트에서 몰래 요청을 보내게하는 공격
+     * */
     // 시큐리티 세팅할 공간
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // CSRF 필터 앞에다 encodingFilter를 놓겠다.
         http.addFilterBefore(encodingFilter(), CsrfFilter.class)
+                // JWT 예외필터 -> JWT 인증필터 -> 로그인 필터 -> Usernamepassword필터
+                .addFilterBefore(authenticationErrorFilter,
+                        UsernamePasswordAuthenticationFilter.class) // JWT 예외 필터
+                .addFilterBefore(jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class) // JWT 인증 필터
                 .addFilterBefore(jwtUsernamePasswordAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class); // 로그인 필터
+
+        // 예외 핸들러 등록
+        http.exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint)// 인증이 안된 경우의 핸들러
+                .accessDeniedHandler(customAccessDeniedHandler); // 인가 문제 핸들러
 
         // CORS 설정 추가
         http.cors();
@@ -74,11 +91,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // URL별 접근 권한 설정
         http.authorizeRequests()
                 .antMatchers("/security/all")
-                    .permitAll()// 모든 권한 접근 허용
+                .permitAll()// 모든 권한 접근 허용
                 .antMatchers("/security/admin")
-                    .access("hasRole('ROLE_ADMIN')")
+                .access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/security/member")
-                    .access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')");
+                .access("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')")
+                .anyRequest().authenticated(); // 인증된 사람들 (인증객체가 있는 상태)
 
     }
 
@@ -106,7 +124,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/assets/**",
                         "/*", // 루트경로 바로 아래 /login, /member
-                        "/api/member/**" // /api/member 하위 경로 제외
+                        "/api/member/**", // /api/member 하위 경로 제외
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/webjars/**",
+                        "/v2/api-docs"
                 );
     }
 
