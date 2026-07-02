@@ -1,12 +1,11 @@
 package org.scoula.member.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.scoula.member.dto.MemberDTO;
+import org.scoula.member.dto.MemberJoinDTO;
 import org.scoula.member.service.MemberService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +22,11 @@ public class MemberController {
     }
 
     // 회원가입
+    @PostMapping("")
+    public ResponseEntity<MemberDTO> join(MemberJoinDTO member) {
+
+        return ResponseEntity.ok(service.join(member));
+    }
 
 
 
