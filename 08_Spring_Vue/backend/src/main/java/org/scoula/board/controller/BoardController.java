@@ -1,15 +1,18 @@
 package org.scoula.board.controller;
 
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.scoula.board.domain.BoardAttachmentVO;
 import org.scoula.board.dto.BoardDTO;
 import org.scoula.board.service.BoardService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.scoula.common.pagination.Page;
+import org.scoula.common.pagination.PageRequest;
+import org.scoula.utils.UploadFiles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 
 /*
@@ -18,66 +21,52 @@ import java.util.List;
  * */
 @RestController
 @RequestMapping("/api/board")
-@RequiredArgsConstructor // -> final / not null로 된 필드를 포함하는 생성자를 만들어줌
+@RequiredArgsConstructor
+@Log4j2
 public class BoardController {
-
     private final BoardService service;
 
-    @GetMapping("/list")
-    public List<BoardDTO> getList() {
+//    @GetMapping("")
+//    public ResponseEntity<List<BoardDTO>> getList() {
+//        return ResponseEntity.ok(service.getList());
+//    }
 
-        return service.getList();
-    }
-
-
-    // ResponseEntity : Header, Body에 원하는 내용을 작성하고 싶을때
+    // 요청페이지번호, 한페이지당 데이터건수를 request로 전달받음
     @GetMapping("")
-    public ResponseEntity<List<BoardDTO>> getList2() {
+    public ResponseEntity<Page> getList(PageRequest pageRequest) {
 
-        return ResponseEntity.ok(service.getList());
+        return ResponseEntity.ok(service.getPage(pageRequest));
     }
 
-    // 단건조회 api/board/{no}
     @GetMapping("/{no}")
     public ResponseEntity<BoardDTO> getById(@PathVariable Long no) {
-
         return ResponseEntity.ok(service.get(no));
     }
 
-
-    // [POST] /api/board  -> 생성
-    // 요청에 대한 명시
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BoardDTO> create(
-            // "data" key에 담긴 값은 applicastion/json으로 받음
-            @RequestPart("data") BoardDTO boardDTO, // applicastion/json
-            // "files" key에 담긴 값은 MultipartFile 목록으로 받음
-            @RequestPart("files") List<MultipartFile> files // MultipartFile
-    ) {
-
-        // DTO에 파일 삽입
-        boardDTO.setFiles(files);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service.create(boardDTO));
+    @PostMapping("")
+    public ResponseEntity<BoardDTO> create(BoardDTO board) {
+        return ResponseEntity.ok(service.create(board));
     }
 
-
-    // 수정요청 [PUT] /api/board/{no}
     @PutMapping("/{no}")
-    public ResponseEntity<BoardDTO> update(
-            @PathVariable Long no, @RequestBody BoardDTO boardDTO) {
-
-        boardDTO.setNo(no);
-
-        return ResponseEntity.ok(service.update(boardDTO));
+    public ResponseEntity<BoardDTO> update(@PathVariable Long no, BoardDTO board) {
+        return ResponseEntity.ok(service.update(board));
     }
 
     @DeleteMapping("/{no}")
     public ResponseEntity<BoardDTO> delete(@PathVariable Long no) {
-
         return ResponseEntity.ok(service.delete(no));
     }
 
+    @GetMapping("/download/{no}")
+    public void download(@PathVariable Long no, HttpServletResponse response) throws Exception {
+        BoardAttachmentVO attachment = service.getAttachment(no);
+        File file = new File(attachment.getPath());
+        UploadFiles.download(response, file, attachment.getFilename());
+    }
+
+    @DeleteMapping("/deleteAttachment/{no}")
+    public ResponseEntity<Boolean> deleteAttachment(@PathVariable Long no) throws Exception {
+        return ResponseEntity.ok(service.deleteAttachment(no));
+    }
 }

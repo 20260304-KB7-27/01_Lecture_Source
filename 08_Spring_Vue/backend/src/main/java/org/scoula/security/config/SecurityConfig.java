@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +29,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.multipart.support.MultipartFilter;
 
+import javax.servlet.ServletContext;
 import java.util.Arrays;
 
 /*
@@ -50,13 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
 
-    // 문자셋필터
-    public CharacterEncodingFilter encodingFilter() {
-        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
-        encodingFilter.setEncoding("UTF-8");
-        encodingFilter.setForceEncoding(true);
-        return encodingFilter;
-    }
 
     /*
      * CSRF : 로그인한 사용자를 악의적인 사이트에서 몰래 요청을 보내게하는 공격
@@ -65,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // CSRF 필터 앞에다 encodingFilter를 놓겠다.
-        http.addFilterBefore(encodingFilter(), CsrfFilter.class)
+        http
                 // JWT 예외필터 -> JWT 인증필터 -> 로그인 필터 -> Usernamepassword필터
                 .addFilterBefore(authenticationErrorFilter,
                         UsernamePasswordAuthenticationFilter.class) // JWT 예외 필터
@@ -82,16 +78,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // CORS 설정 추가
         http.cors();
 
-        http
-                .httpBasic().disable() // 기본 HTTP 인증 비활성화
-                .csrf().disable() // csrf 비활성화
-                .formLogin().disable() // formlogin 비활성화
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 생성 안함
+        http.httpBasic().disable() // 기본 HTTP 인증 비활성화
+                .csrf().disable() // CSRF 비활성화
+                .formLogin().disable() // formLogin 비활성화 관련 필터 해제
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 생성 모드 설정
 
         // URL별 접근 권한 설정
-        http.authorizeRequests()
-//                .anyRequest().permitAll();
-                .anyRequest().authenticated();
+        http
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers(HttpMethod.POST, "/api/member").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/member", "/api/member/*/changepassword").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/board/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+                .anyRequest().permitAll();
 
     }
 
@@ -119,7 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/assets/**",
                         "/*", // 루트경로 바로 아래 /login, /member
-                        "/api/member/**", // /api/member 하위 경로 제외
+//                        "/api/member/**", // /api/member 하위 경로 제외
                         "/swagger-ui.html",
                         "/swagger-resources/**",
                         "/webjars/**",
